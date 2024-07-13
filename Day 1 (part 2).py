@@ -1,5 +1,5 @@
 # import package
-import re
+import regex as re
 
 # read data
 with open('data/day1.txt') as f:
@@ -19,34 +19,32 @@ nums = {
 }
 
 dgts = {
-    'one'   : 1,
-    'two'   : 2,
-    'three' : 3,
-    'four'  : 4,
-    'five'  : 5, 
-    'six'   : 6,
-    'seven' : 7, 
-    'eight' : 8,
-    'nine'  : 9
+    '1' : 1,
+    '2' : 2,
+    '3' : 3,
+    '4' : 4,
+    '5' : 5, 
+    '6' : 6,
+    '7' : 7, 
+    '8' : 8,
+    '9' : 9
 }
+
+both = dict(nums)
+both.update(dgts)
+
+# define regex pattern
+pattern = r'\d|one|two|three|four|five|six|seven|eight|nine'
 
 # iterate
 digits = [0]*len(lines)
-positions = [0]*9
 
 for idx, text in enumerate(lines):
-    for word, value in nums.items():
-         positions[value - 1] = text.find(word)
-         first = positions.index(min(n for n in positions if n > -1))
-         last = positions.index(max(n for n in positions if n > -1))
-         digits[idx] = int(first + last)
+    matches = re.findall(pattern, text, overlapped = True)
+    first   = matches[0]
+    last    = matches[-1]
 
-digits
+    digits[idx] = int(str(both[first]) + str(both[last]))
 
-for idx, text in enumerate(lines):
-    text.find('one')
-
-
-re.search(r'\d|one|two|three|four|five|six|seven|eight|nine', lines[0]).group()
-re.search(r'\d|one|two|three|four|five|six|seven|eight|nine', lines[0]).group()
-
+# sum
+sum(digits)
