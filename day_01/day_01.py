@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import pathlib
-import re
+import regex as re
 
 import day_01
 
@@ -25,6 +25,26 @@ def solve_q1(data: list[str]) -> int:
     return sum(digits)
 
 
+def solve_q2(data: list[str]) -> int:
+    numbers = ('one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine')
+    mapping: dict[str, int] = {}
+    for n, name in enumerate(numbers, start=1):
+        mapping[name] = n
+        mapping[str(n)] = n
+
+    pattern = r'|'.join(numbers)
+    digits_re = re.compile(rf'\d|{pattern}')
+    digits = []
+    for text in data:
+        matches = digits_re.findall(text, overlapped=True)
+        first = matches[0]
+        last = matches[-1]
+
+        digits.append(mapping[first] + mapping[last])
+
+    return sum(digits)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=str, default=DEFAULT_DATA)
@@ -32,6 +52,7 @@ def main():
 
     lines = load(args.input)
     print(f"Q1: {solve_q1(lines)}")
+    print(f"Q2: {solve_q2(lines)}")
 
 
 if __name__ == '__main__':
