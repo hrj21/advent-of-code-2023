@@ -40,7 +40,7 @@ def solve_q2(data: list[str]) -> int:
         first = matches[0]
         last = matches[-1]
 
-        digits.append(mapping[first] + mapping[last])
+        digits.append(mapping[first] * 10 + mapping[last])
 
     return sum(digits)
 
